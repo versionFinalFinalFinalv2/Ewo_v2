@@ -4,7 +4,11 @@ import { Rubik } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const _rubik = Rubik({ subsets: ["latin"] })
+const rubik = Rubik({ 
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-rubik"
+})
 
 export const metadata: Metadata = {
   title: "EWO-2000 | Autó Szervíz",
@@ -35,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="hu">
-      <body className={`font-sans antialiased`}>
+    <html lang="hu" className={rubik.variable}>
+      <body className="font-sans antialiased">
         {children}
         <Analytics />
       </body>

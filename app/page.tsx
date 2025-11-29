@@ -6,7 +6,6 @@ import { useState, useEffect } from "react"
 export default function Home() {
   const [activeMenu, setActiveMenu] = useState("home")
   const [scrollY, setScrollY] = useState(0)
-  const [visibleElements, setVisibleElements] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const observerOptions = {
@@ -16,14 +15,15 @@ export default function Home() {
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setVisibleElements((prev) => new Set([...prev, entry.target.id]))
+        if (entry.isIntersecting && entry.target.id) {
+          entry.target.classList.add("visible")
         }
       })
     }, observerOptions)
 
     // Összes fade-in element megfigyelése
-    document.querySelectorAll(".fade-in-up").forEach((element) => {
+    const fadeElements = document.querySelectorAll(".fade-in-up")
+    fadeElements.forEach((element) => {
       if (element.id) {
         observer.observe(element)
       }
@@ -34,7 +34,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -42,7 +42,14 @@ export default function Home() {
     setActiveMenu(sectionId)
     const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+      const headerOffset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
     }
   }
 
@@ -51,7 +58,14 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-primary text-primary-foreground">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/images/ewo-white.png" alt="EWO-2000" className="h-12 w-auto" />
+            <img 
+              src="/images/ewo-white.png" 
+              alt="EWO-2000" 
+              className="h-12 w-auto" 
+              width={120}
+              height={48}
+              loading="eager"
+            />
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -227,7 +241,12 @@ export default function Home() {
             className="fade-in-up bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-muted overflow-hidden">
-              <img src="/images/szerviz.jpg" alt="Szervíz szolgáltatás" className="w-full h-full object-cover" />
+              <img 
+                src="/images/szerviz.jpg" 
+                alt="Szervíz szolgáltatás" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="p-6 sm:p-8">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -251,6 +270,7 @@ export default function Home() {
                 src="/images/karosszeria.jpg"
                 alt="Karosszériajavítás, fényezés"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="p-6 sm:p-8">
@@ -271,7 +291,12 @@ export default function Home() {
             className="fade-in-up bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-muted overflow-hidden">
-              <img src="/images/futomu.jpg" alt="3D futómű állítás" className="w-full h-full object-cover" />
+              <img 
+                src="/images/futomu.jpg" 
+                alt="3D futómű állítás" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="p-6 sm:p-8">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -290,7 +315,12 @@ export default function Home() {
             className="fade-in-up bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-muted overflow-hidden">
-              <img src="/images/eredet.jpg" alt="Eredetiségvizsgálat" className="w-full h-full object-cover" />
+              <img 
+                src="/images/eredet.jpg" 
+                alt="Eredetiségvizsgálat" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="p-6 sm:p-8">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -309,7 +339,12 @@ export default function Home() {
             className="fade-in-up bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-muted overflow-hidden">
-              <img src="/images/karugy.jpg" alt="Gépjármű kárügyintézés" className="w-full h-full object-cover" />
+              <img 
+                src="/images/karugy.jpg" 
+                alt="Gépjármű kárügyintézés" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="p-6 sm:p-8">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -328,7 +363,12 @@ export default function Home() {
             className="fade-in-up bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-muted overflow-hidden">
-              <img src="/images/klima.jpg" alt="Klíma töltés és tisztítás" className="w-full h-full object-cover" />
+              <img 
+                src="/images/klima.jpg" 
+                alt="Klíma töltés és tisztítás" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="p-6 sm:p-8">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -371,7 +411,14 @@ export default function Home() {
               {/* Bal oldal - Logó és leírás */}
               <div className="md:col-span-1 lg:col-span-1">
                 <div className="mb-4">
-                  <img src="/images/ewo-white.png" alt="EWO-2000" className="h-10 w-auto" />
+                  <img 
+                    src="/images/ewo-white.png" 
+                    alt="EWO-2000" 
+                    className="h-10 w-auto" 
+                    width={100}
+                    height={40}
+                    loading="lazy"
+                  />
                 </div>
                 <p
                   className="text-primary-foreground/80 text-sm leading-relaxed mb-4"
