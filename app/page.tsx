@@ -365,7 +365,7 @@ export default function Home() {
         </div>
 
         {/* Footer - Többoszlopos layout */}
-        <div className="bg-primary py-16 sm:py-20 md:py-24 border-t border-primary-foreground/10">
+        <div id="contact" className="bg-primary py-16 sm:py-20 md:py-24 border-t border-primary-foreground/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 pb-12 border-primary-foreground/10 mb-12 border-b sm:gap-36">
               {/* Bal oldal - Logó és leírás */}
